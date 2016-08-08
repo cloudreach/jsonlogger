@@ -86,6 +86,6 @@ def test_function_trace(mocker):
     tracetest(1, '2', [3.0], keyword=True, x={})
 
     assert json.loads(sys.stdout.write.call_args[0][0]) == {
-        'traced_call': 'tracetest(1, 2, [3.0], keyword=True, x={})',
+        'call': 'tracetest(1, 2, [3.0], keyword=True, x={})',
         'loglevel': 'trace'
     }

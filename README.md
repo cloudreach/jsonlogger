@@ -30,14 +30,32 @@ log.error(error_message='Oh no!')
 log.fatal('the error code was', 500)
 ```
 
+Will produce the output:
+
+```json
+{"line": "application started", "loglevel": "trace"}
+{"line": "Something went wrong", "filename": "test.py", "loglevel": "debug"}
+{"line": "This is a dict full of stuff", "y": 0, "x": 1, "loglevel": "info"}
+{"line": "It's about to go critical", "error": 123, "time_of_death": 120000, "loglevel": "warn"}
+{"error_message": "Oh no!", "loglevel": "error"}
+{"line": "the error code was 500", "loglevel": "fatal"}
+```
+
 There is also a decorator for quickly logging out function calls and their arguments:
 
-```
+```python
 import jsonlogger as log
 
 @log.traceme
 def somefunc(N):
   return N
+```
+
+Will produce:
+
+```json
+{"loglevel": "trace", "call": "somefunc(1)"}
+{"loglevel": "trace", "call": "somefunc(100)"}
 ```
 
 # Run the tests

@@ -14,7 +14,7 @@ def traceme(fn):
     use this to decorate functions for quick and dirty logging of calls
     '''
     def traced(*args, **kwargs):
-        trace(traced_call='{}({})'.format(
+        trace(call='{}({})'.format(
             fn.__name__,
             ', '.join(list(map(str, args)) +
                       list(map(lambda i: '{}={}'.format(*i),
