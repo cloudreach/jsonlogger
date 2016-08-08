@@ -4,6 +4,7 @@ For use by containerised applications using a centralised log aggregator.
 '''
 
 import json
+from datetime import datetime
 from sys import stdout
 
 LOG_LEVELS = ['trace', 'debug', 'info', 'warning', 'warn', 'error', 'fatal']
@@ -27,7 +28,10 @@ def log(levelname, *args, **kwargs):
     levelname = levelname.lower()
     assert levelname in LOG_LEVELS, 'Unsupported log level'
 
-    output = {'loglevel': levelname}
+    output = {
+        'loglevel': levelname,
+        'timestamp': datetime.now().isoformat()
+    }
 
     for arg in args:
         if isinstance(arg, dict):
