@@ -58,6 +58,10 @@ Will produce:
 {"loglevel": "trace", "timestamp": "2016-08-08T16:25:23.402889", "call": "somefunc(100)"}
 ```
 
+# Environment Variables
+
+- `LOG_LEVEL` to suppress anything beneath the the level specified. Default: `trace`
+
 # Run the tests
 
 ```

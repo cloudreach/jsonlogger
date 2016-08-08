@@ -3,11 +3,22 @@ A stupid zero-config module for logging JSON objects to stdout & stderr.
 For use by containerised applications using a centralised log aggregator.
 '''
 
+import os
 import json
 from datetime import datetime
 from sys import stdout
 
-LOG_LEVELS = ['trace', 'debug', 'info', 'warning', 'warn', 'error', 'fatal']
+LOG_LEVELS = {
+    'trace': 10,
+    'debug': 20,
+    'info': 30,
+    'warning': 40,
+    'warn': 40,
+    'error': 50,
+    'fatal': 60
+}
+
+LOG_LEVEL = LOG_LEVELS[os.getenv('LOG_LEVEL', 'trace').lower()]
 
 
 def traceme(fn):
@@ -26,7 +37,11 @@ def traceme(fn):
 
 def log(levelname, *args, **kwargs):
     levelname = levelname.lower()
-    assert levelname in LOG_LEVELS, 'Unsupported log level'
+    assert levelname in LOG_LEVELS.keys(), 'Unsupported log level'
+
+    print(LOG_LEVELS[levelname], LOG_LEVEL)
+    if LOG_LEVELS[levelname] < LOG_LEVEL:
+        return None
 
     output = {
         'loglevel': levelname,
@@ -49,5 +64,5 @@ def log(levelname, *args, **kwargs):
 def __level_alias(level):
     globals()[level] = lambda *a, **kw: log(level, *a, **kw)
 
-for level in LOG_LEVELS:
+for level in LOG_LEVELS.keys():
     __level_alias(level)
