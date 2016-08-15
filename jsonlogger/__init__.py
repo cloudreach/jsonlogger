@@ -39,7 +39,6 @@ def log(levelname, *args, **kwargs):
     levelname = levelname.lower()
     assert levelname in LOG_LEVELS.keys(), 'Unsupported log level'
 
-    print(LOG_LEVELS[levelname], LOG_LEVEL)
     if LOG_LEVELS[levelname] < LOG_LEVEL:
         return None
 
