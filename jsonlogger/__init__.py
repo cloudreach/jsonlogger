@@ -26,7 +26,6 @@ class LogEncoder(JSONEncoder):
         if isinstance(obj, (list, tuple, str, dict,
                             int, float, bool, type(None))):
             return JSONEncoder.default(self, obj)
-        print('Serializing thing')
         return str(format(repr(obj)))
 
 
