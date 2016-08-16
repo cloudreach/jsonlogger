@@ -80,6 +80,28 @@ def test_log(mocker, args, kwargs, expected_output):
     mocker.resetall()
 
 
+@freeze_time('2016-01-01 00:00:00')
+@pytest.mark.parametrize('args,kwargs,expected_output', (
+    (('this is a test',),
+     {'exception': Exception('something went wrong')},
+     {'loglevel': 'debug',
+      'line': 'this is a test',
+      'exception': "Exception('something went wrong',)",
+      'timestamp': '2016-01-01T00:00:00'}),
+    (('this is a test',),
+     {'set': set([1, 2, 3])},
+     {'loglevel': 'debug',
+      'line': 'this is a test',
+      'set': '{1, 2, 3}',
+      'timestamp': '2016-01-01T00:00:00'}),
+))
+def test_log_encoder(mocker, args, kwargs, expected_output):
+    mocker.patch('sys.stdout.write')
+    jsonlogger.log('debug', *args, **kwargs)
+    assert json.loads(sys.stdout.write.call_args[0][0]) == expected_output
+    mocker.resetall()
+
+
 def test_unsupported_level():
     with pytest.raises(AssertionError):
         jsonlogger.log('glorp', 'this is a test')

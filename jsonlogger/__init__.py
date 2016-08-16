@@ -4,7 +4,7 @@ For use by containerised applications using a centralised log aggregator.
 '''
 
 import os
-import json
+from json import dumps, JSONEncoder
 from datetime import datetime
 from sys import stdout
 
@@ -19,6 +19,15 @@ LOG_LEVELS = {
 }
 
 LOG_LEVEL = LOG_LEVELS[os.getenv('LOG_LEVEL', 'trace').lower()]
+
+
+class LogEncoder(JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, (list, tuple, str, dict,
+                            int, float, bool, type(None))):
+            return JSONEncoder.default(self, obj)
+        print('Serializing thing')
+        return str(format(repr(obj)))
 
 
 def traceme(fn):
@@ -56,7 +65,7 @@ def log(levelname, *args, **kwargs):
             else:
                 output['line'] = str(arg)
 
-    output = json.dumps({**output, **kwargs}) + "\n"
+    output = dumps({**output, **kwargs}, cls=LogEncoder) + "\n"
     stdout.write(output)
 
 
