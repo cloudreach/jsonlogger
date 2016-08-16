@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
   name='jsonlogger',
   packages=['jsonlogger'],
-  version='0.2.4',
+  version='0.2.6',
   description='zero conf JSON logging to standard output',
   author='John Houston',
   author_email='john.houston@cloudreach.com',
